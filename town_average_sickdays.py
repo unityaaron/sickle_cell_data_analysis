@@ -3,83 +3,36 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
-
-# Step 1: Load the data
 df = pd.read_excel('sickle_cell_dataset_100_rows.xlsx')
 
-# Step 2: Check the data loaded correctly
-print(df.head())
-
-avg_sick_days = df.groupby('Town')['Total Sick Days'].mean().round()
-print(avg_sick_days)
+# LINE GRAPH: Number of Diagnoses Per Year
+# Question: How has the number of diagnoses changed over the years?
+# Count diagnoses per year
 
 
-# Step 5: Plot the bar chart
-avg_sick_days.plot(kind='bar', color=['steelblue', 'coral', 'mediumseagreen'], edgecolor='black')
+diagnoses_per_year = df.groupby('Diagnosis_Year')['Child_ID'].count()
+print(diagnoses_per_year)
 
-# Step 6: Add labels and title
-plt.title('Average Total Sick Days Per Town', fontsize=14)
-plt.xlabel('Town', fontsize=12)
-plt.ylabel('Average Sick Days', fontsize=12)
-plt.xticks(rotation=90)
-plt.tight_layout()
-plt.savefig('average_sick_days_per_town.png')
+# Create the line graph
+plt.figure(figsize=(8, 5))
 
+# LINE GRAPH: The Shortcut Method
+# Step 1: Calculate the summary
+diagnoses_per_year = df.groupby('Diagnosis_Year')['Child_ID'].count()
 
-#I OMMITTED BAR CHART 2
-
-
-# BAR CHART 3: Median Hemoglobin Level by Sickle Cell Type
-# Question: Do children with HbSS have lower typical hemoglobin than HbSC?
-
-# Check the sickle cell types in our data
-print(df['Sickle_Cell_Type'].unique())
-print(df['Sickle_Cell_Type'].value_counts())
-
-# Group by Sickle_Cell_Type, calculate median hemoglobin
-median_hb = df.groupby('Sickle_Cell_Type')['Hemoglobin_Level_g_dL'].median()
-
-print(median_hb)
-
-# Plot
-median_hb.plot(kind='bar', color=['mediumorchid', 'crimson'], edgecolor='black')
-
-plt.title('Median Hemoglobin Level by Sickle Cell Type', fontsize=14)
-plt.xlabel('Sickle Cell Type', fontsize=12)
-plt.ylabel('Median Hemoglobin (g/dL)', fontsize=12)
-plt.xticks(rotation=0)
-plt.tight_layout()
-plt.savefig('median_hemoglobin_level_by_cell_type.jpg')
-
-
-
-
-
-#PIE CHARTS OF OUR THREE CHARTS
-
-
-
-
-
-
-
-# PIE CHART: Average Total Sick Days Per Town
-# Same question, different visualization: Which town had the highest average total sick days?
-
-# Step 3: Plot the pie chart
-plt.figure(figsize=(7, 7))
-
-avg_sick_days.plot(
-    kind='pie',
-    colors=['steelblue', 'coral', 'mediumseagreen'],
-    autopct='%1.1f%%',
-    startangle=90,
-    
+# Step 2: Create the line graph using the .plot shortcut
+# We just change kind='bar' to kind='line'
+diagnoses_per_year.plot(
+    kind='line', 
+    color='steelblue', 
+    marker='o', 
+    linewidth=2
 )
 
-# Step 4: Add title and clean up
-plt.title('Average Total Sick Days Per Town', fontsize=14)
-plt.ylabel('')
+# Step 3: Add labels and title (Same as before)
+plt.title('Number of Diagnoses Per Year', fontsize=14)
+plt.xlabel('Year', fontsize=12)
+plt.ylabel('Number of Children Diagnosed', fontsize=12)
+
 plt.tight_layout()
-plt.savefig('average_sick_days_pie_chart.png')
 plt.show()
